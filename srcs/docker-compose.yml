@@ -1,0 +1,39 @@
+version: 2
+
+services:
+    nginx:
+        build:
+            context: /requiriments/nginx
+            dockerimage: Dockerfile
+        ports:
+            -443:443
+            -80:80
+        depends-on:
+            -wordpress
+        networks:
+            -inception
+    wordpress:
+        image: wordpress
+        #build: ./wordpress
+        ports:
+            -9000:9000
+        depends-on:
+            mariadb
+        networks:
+            -inception
+        volumes:
+            -./maquinalocal:contenedor /var/www/html:delegated
+    mariadb:
+        image: mariadb
+        #build: ./mariadb
+        ports:
+            -3306:3306
+         networks:
+             -inception
+         volumes:
+             -./maquinalocal:contenedor /var/lib/mysql
+networks:
+    inception:
+        -nginx
+        -wordpress
+        -mariadb

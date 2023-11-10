@@ -1,0 +1,3 @@
+- comandos para mirar info de distribución: cat /etc/os-release, lsb_release -d
+- comando para ver solo ids de contenedores: docker ps -aq
+- comando para borrar todos los contenedores: docker rm $(docker ps -aq)
