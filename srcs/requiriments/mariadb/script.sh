@@ -23,11 +23,12 @@ sudo systemctl restart mariadb # reiniciar servidor mariadb
 mysql -u root -p #conectarse a mariadb
 #introducir contraseña creada antes -> "echo $MDB_PASSWORD"
 #crear nueva base de datos para host externo/remoto
-echo "CREATE DATABASE $MDB_NAME"
-echo "CREATE USER '$MDB_USER'@'localhost' IDENTIFIED BY '$MDB_PASSWORD'"
-echo "GRANT ALL PRIVILEGES ON '$MDB_NAME'.* to '$MDB_USER'@'localhost' IDENTIFIED BY '$MDB_PASSWORD'"
-echo "FLUSH PRIVILIGES"
+echo "CREATE DATABASE $MDB_NAME" > tmp.sql
+echo "CREATE USER '$MDB_USER'@'localhost' IDENTIFIED BY '$MDB_PASSWORD'" >> tmp.sql
+echo "GRANT ALL PRIVILEGES ON '$MDB_NAME'.* to '$MDB_USER'@'localhost' IDENTIFIED BY '$MDB_PASSWORD'" >> tmp.sql
+echo "FLUSH PRIVILIGES" >> tmp.sql
 echo "exit"
+mysql < tmp.sql
 
 #else
 

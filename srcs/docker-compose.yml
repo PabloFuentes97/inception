@@ -1,12 +1,10 @@
-version: 2
-
 services:
     nginx:
         container_name: nginx
         #image: nginx
-        build:
-            context: /requiriments/nginx
-            dockerimage: Dockerfile
+        build: /requiriments/wordpress
+            #context: /requiriments/nginx
+            #dockerimage: Dockerfile
         ports:
             -"443:443"
             -"80:80"
@@ -14,11 +12,13 @@ services:
             -wordpress
         networks:
             -inception
+        volumes:
+            -wp_data: /var/www/html
     wordpress:
         #image: wordpress
-        build:
-            context: /requiriments/wordpress
-            dockerimage: Dockerfile
+        build: /requiriments/wordpress
+            #context: /requiriments/wordpress
+            #dockerimage: Dockerfile
         ports:
             -"9000:9000"
         depends-on:
@@ -28,19 +28,21 @@ services:
         volumes:
             -wp_data: /var/www/html
     mariadb:
-        image: mariadb
-        #build: ./mariadb
+        #image: mariadb
+        build: /requiriments/mariadb
+        #    context: 
+        #   dockerimage: Dockerfile
         ports:
             -"3306:3306"
-         networks:
-             -inception
-         volumes:
-             -mdb_data: /var/lib/mysql
+        networks:
+            -inception
+        volumes:
+            -mdb_data: /var/lib/mysql
 networks:
     inception:
         -nginx
         -wordpress
         -mariadb
 volumes:
-    wp_data: 
-    mdb_data:
+    wp_data: volumes/wordpress
+    mdb_data: volumes/mariadb
