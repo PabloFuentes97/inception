@@ -1,22 +1,27 @@
 CONTAINERS = nginx wordpress mariadb
 VOLUMES = volumes/wordpress volumes/mariadb
-#hacer version individual de comandos para poder personalizar qué contenedor tomar como argumento
-build: $(CONTAINERS) $(VOLUMES)
-	docker compose -f docker-compose.yml build $(CONTAINERS)
+init:
 	mkdir $(VOLUMES)
-up: $(CONTAINERS)
-	docker compose -f docker-compose.yml up $(CONTAINERS)
-start: $(CONTAINERS)
-	docker compose -f docker-compose.yml start $(CONTAINERS)
-down: $(CONTAINERS)
-	docker compose -f docker-compose.yml down $(CONTAINERS)
-destroy: $(CONTAINERS) $(VOLUMES)
-	docker compose -f docker-compose.yml destroy $(CONTAINERS)
+	docker-compose -f docker-compose.yml build
+build:
+	docker-compose -f docker-compose.yml build
+up:
+	docker-compose -f docker-compose.yml up
+start:
+	docker-compose -f docker-compose.yml start
+down:
+	docker-compose -f docker-compose.yml down
+destroy:
+	docker-compose -f docker-compose.yml down
+	docker rmi $(shell docker images -a -q)
 	rm -rf $(VOLUMES)
-stop: $(CONTAINERS)
-	docker compose -f docker-compose.yml stop $(CONTAINERS)
-restart: $(CONTAINERS)
-	docker compose -f docker-compose.yml restart $(CONTAINERS)
+clean:
+	docker rmi $(shell docker images -a -q)
+	rm -rf $(VOLUMES)
+stop:
+	docker compose -f docker-compose.yml stop
+restart:
+	docker compose -f docker-compose.yml restart
 ps:
 	docker compose -f docker-compose.yml ps
 nginx:

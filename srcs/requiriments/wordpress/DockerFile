@@ -1,15 +1,21 @@
-FROM debian:buster
+FROM debian:bullseye
+
+#EXPOSE 9000
+
 #instalar php
 RUN	apt-get update && apt-get upgrade
-RUN apt install php php-fpm php-mysql php-zip php-gd -y curl -y
-RUN	mkdir -p /srv/www
-RUN chown www-data: /srv/www
+RUN apt install php php7.3-fpm mariadb-client php-mysql php-zip php-gd -y curl -y wget tar
+#RUN	mkdir -p /srv/www
+#RUN chown www-data: /srv/www
 
 #instalar wordpress
-RUN apt install tar 
-RUN curl https://wordpress.org/latest.tar.gz | sudo -u www-data tar zx - C /sv/www
-RUN tar -xzvf latest.tar.gz
-RUN chown -R www-data:www-data /var/www/html
-COPY /tools/wp-config.php wp-config.php 
+#RUN wget http://wordpress.org/latest.tar.gz
+#RUN tar xfz latest.tar.gz
+#RUN mv wordpress/* .
+#RUN rm -rf latest.tar.gz
+#RUN rm -rf wordpress
 
-CMD ["script.sh"] 
+COPY tools/script.sh /usr/local/bin/script.sh
+RUN chmod +x /usr/local/bin/script.sh
+
+CMD ["/usr/local/bin/script.sh"] 
