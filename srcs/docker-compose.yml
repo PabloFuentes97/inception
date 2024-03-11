@@ -1,54 +1,63 @@
+# docker-compose.yml
+version: "3.8"
 services:
-    nginx:
-        container_name: nginx
-        build: ./requiriments/nginx
-        ports:
-            - "443:443"
-        depends_on:
-            - wordpress
-        networks:
-            - nginx-wp
-        volumes:
-            - "wp_data:/var/www/html"
-        restart: on-failure
-    wordpress:
-        container_name: wordpress
-        build: ./requiriments/wordpress
-        ports:
-            - "9000:9000"
-        depends_on:
-            - mariadb
-        networks:
-            - nginx-wp
-            - wp-mdb
-        volumes:
-            - "wp_data:/var/www/html"
-        restart: on-failure
-    mariadb:
-        container_name: mariadb
-        build: ./requiriments/mariadb
-        ports:
-            - "3306:3306"
-        networks:
-            - wp-mdb
-        volumes:
-            - "mdb_data:/var/lib/mysql"
-        restart: on-failure
+  nginx:
+    build: requirements/nginx
+    ports:
+      - "443:443"
+    volumes:
+        - "wordpress_volume:/wordpress"
+    env_file:
+      - .env
+    networks:
+      - wordpress-nginx
+    restart: always
+    depends_on:
+      - wordpress
+
+  mariadb:
+    build: requirements/mariadb
+    ports:
+        - '3306:3306'
+    volumes:
+        - database:/var/lib/mysql
+    env_file:
+      - .env
+    tty: true
+    stdin_open: true
+    networks:
+      - wordpress-mariadb
+    restart: always
+  
+  wordpress:
+    build: requirements/wordpress
+    ports:
+        - '9000:9000'
+    volumes:
+        - "wordpress_volume:/wordpress"
+    env_file:
+      - .env
+    networks:
+      - wordpress-mariadb
+      - wordpress-nginx
+    depends_on:
+      - mariadb
+    restart: always
+
 networks:
-    nginx-wp:
-        driver: bridge
-    wp-mdb:
-        driver: bridge
+  wordpress-nginx:
+  wordpress-mariadb:
+
 volumes:
-    wp_data:
-        driver: local
-        driver_opts:
-            type: none
-            device: "/Users/pfuentes/Desktop/inception_prueba/srcs/volumes/wordpress"
-            o: bind
-    mdb_data:
-        driver: local
-        driver_opts:
-            type: none
-            device: "/Users/pfuentes/Desktop/inception_prueba/srcs/volumes/mariadb"
-            o: bind
+  database:
+    driver: local
+    driver_opts:
+      type: none
+      device: ~/pfuentes/data/db
+      o: bind
+  wordpress_volume:
+    driver: local
+    driver_opts:
+      type: none
+      device: ~/pfuentes/data/wordpress
+      o: bind
