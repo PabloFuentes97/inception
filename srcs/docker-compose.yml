@@ -23,8 +23,6 @@ services:
         - database:/var/lib/mysql
     env_file:
       - .env
-    tty: true
-    stdin_open: true
     networks:
       - wordpress-mariadb
     restart: always
@@ -53,11 +51,11 @@ volumes:
     driver: local
     driver_opts:
       type: none
-      device: ~/pfuentes/data/db
+      device: /home/pfuentes/data/db
       o: bind
   wordpress_volume:
     driver: local
     driver_opts:
       type: none
-      device: ~/pfuentes/data/wordpress
+      device: /home/pfuentes/data/wordpress
       o: bind
