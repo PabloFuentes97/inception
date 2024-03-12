@@ -4,7 +4,9 @@ COPY . /app
 
 WORKDIR /app
 
-RUN chmod +x ./tools/setup2.sh
+COPY ./tools/setup.sh /usr/bin/setup.sh
+
+RUN chmod +x /usr/bin/setup.sh
 
 RUN apk update && apk add curl \
                          php-fpm \
@@ -16,4 +18,4 @@ RUN apk update && apk add curl \
 
 COPY ./conf/php-fpm.conf /etc/php81/php-fpm.d/www.conf
 
-CMD ["./tools/setup2.sh"]
+CMD ["/usr/bin/setup.sh"]
