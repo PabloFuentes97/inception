@@ -6,15 +6,17 @@ DOCKER_COMPOSE_PATH = ./srcs/docker-compose.yml
 run: $(VOLUME)
 	docker compose -f $(DOCKER_COMPOSE_PATH) up --build --remove-orphans
 
+stop:
+	docker compose -f $(DOCKER_COMPOSE_PATH) stop
+
 down:
 	docker compose -f $(DOCKER_COMPOSE_PATH) down 
 
-destroy:
+clean:
 	sudo rm -rf $(VOL_DIR)
 	docker compose -f $(DOCKER_COMPOSE_PATH) down --rmi all --volumes
 re:
-	sudo rm -rf $(VOL_DIR)
-	make down
+	make clean
 	make 
 
 $(VOLUME):
