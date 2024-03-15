@@ -36,7 +36,6 @@ if [ ! -f /wordpress/wp-config.php ]; then
 
   wp user create $WORDPRESS_USER $WORDPRESS_EMAIL --role=author --user_pass=$WORDPRESS_PASSWORD --path=/wordpress
 
-
 fi
 
 php-fpm81 --nodaemonize

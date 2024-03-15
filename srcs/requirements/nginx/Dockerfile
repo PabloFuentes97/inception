@@ -15,9 +15,6 @@ RUN openssl req -x509 \
 	-keyout /etc/nginx/ssl/pfuentes.key \
 	-out	/etc/nginx/ssl/pfuentes.csr
 
-#COPY tools ./tools
 COPY conf/nginx.conf /etc/nginx/nginx.conf
-
-#RUN chmod +x tools/setup.sh
 
 CMD ["nginx", "-g", "daemon off;"]
