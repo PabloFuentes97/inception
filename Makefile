@@ -6,8 +6,14 @@ DOCKER_COMPOSE_PATH = ./srcs/docker-compose.yml
 run: $(VOLUME)
 	docker compose -f $(DOCKER_COMPOSE_PATH) up --build --remove-orphans
 
+build:
+	docker compose -f $(DOCKER_COMPOSE_PATH) build
+
 stop:
 	docker compose -f $(DOCKER_COMPOSE_PATH) stop
+
+start:
+	docker compose --f $(DOCKER_COMPOSE_PATH) start
 
 down:
 	docker compose -f $(DOCKER_COMPOSE_PATH) down 
@@ -18,6 +24,8 @@ clean:
 re:
 	make clean
 	make 
+all:
+	make run
 
 $(VOLUME):
 	mkdir -p $(VOLUME) 2>/dev/null

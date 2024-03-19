@@ -1,4 +1,7 @@
 # docker-compose.yml
+
+version: "3.8"
+
 services:
   nginx:
     container_name: nginx
@@ -8,6 +11,8 @@ services:
         - "wordpress_volume:/wordpress"
     env_file:
       - .env
+    ports:
+      - "443:443"
     networks:
       - wordpress-nginx
     restart: on-failure
