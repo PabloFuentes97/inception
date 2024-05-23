@@ -10,7 +10,7 @@ if [ ! -d "/var/lib/mysql/$MDB_DATABASE" ]; then
   #mysqld_secure_installation 
   echo "Starting MySQL secure installation..."
   #change root password
-  echo "ALTER USER 'root'@'localihost' IDENTIFIED BY '$MDB_ROOT_PASSWORD';" >> mysql_secure_installation.sql
+  echo "ALTER USER 'root'@'localhost' IDENTIFIED BY '$MDB_ROOT_PASSWORD';" >> mysql_secure_installation.sql
   echo "DELETE FROM mysql.user WHERE User='root' AND Host NOT IN ('localhost', '127.0.0.1', '::1');" >> $MDB_INIT_FILE
   #remove anonymous users
   echo "DROP USER ''@'localhost';" >> $MDB_INIT_FILE
